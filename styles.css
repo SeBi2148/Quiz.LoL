@@ -1,0 +1,42 @@
+body {
+    background-color: #1a1f36; /* albastru închis */
+    color: white;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+h1 {
+    color: #00bfff; /* un albastru deschis pentru titlu */
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #0077cc;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #005fa3;
+}
+
+input[type="text"] {
+    padding: 5px;
+    border-radius: 3px;
+    border: none;
+}
+progress-container {
+    width: 100%;
+    background-color: #ccc;
+    border-radius: 20px;
+    margin: 10px 0;
+}
+
+progress-bar {
+    height: 20px;
+    background-color: #0074D9;
+    border-radius: 20px;
+    transition: width 0.5s ease-in-out;
+}

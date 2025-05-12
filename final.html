@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Rezultatul Final</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Quiz Finalizat!</h1>
+    <p>Întrebări corecte: {{ score }}</p>
+    <p>Întrebări greșite: {{ score }}</p>
+
+    <form action="{{ url_for('reset') }}" method="post">
+        <button type="submit">Reia Quiz-ul</button>
+    </form>
+</body>
+</html>

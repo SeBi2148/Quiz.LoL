@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz</title>
+</head>
+<div id="timer" style="font-size: 24px; color: red; margin-top: 20px;">15 secunde</div>
+
+<script>
+    let timeLeft = 15;
+    let timerElement = document.getElementById('timer');
+    let formSubmitted = false;
+
+    let timer = setInterval(function() {
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+
+            if (!formSubmitted) {
+                const form = document.querySelector("form");
+
+                // Creează input-uri goale dacă nu s-a selectat nimic
+                if (!form.querySelector('input[name="answer_1"]:checked')) {
+                    let hidden1 = document.createElement("input");
+                    hidden1.type = "hidden";
+                    hidden1.name = "answer_1";
+                    hidden1.value = "Niciun raspuns";
+                    form.appendChild(hidden1);
+                }
+
+                if (!form.querySelector('input[name="answer_2"]:checked')) {
+                    let hidden2 = document.createElement("input");
+                    hidden2.type = "hidden";
+                    hidden2.name = "answer_2";
+                    hidden2.value = "Niciun raspuns";
+                    form.appendChild(hidden2);
+                }
+
+                formSubmitted = true;
+                form.submit();
+            }
+        } else {
+            timerElement.textContent = timeLeft + " secunde";
+            timeLeft--;
+        }
+    }, 1000);
+
+    document.querySelector("form").addEventListener("submit", function () {
+        formSubmitted = true;
+    });
+</script>
+
+<body>
+
+<p>Întrebarea {{ session['questions_answered'] + 1 }} din 11</p>
+<div class="progress-container">
+    <div class="progress-bar" style="width: {{ (session['questions_answered'] + 1) * 11 }}%;"></div>
+</div>
+    <h1>League of Legends Quiz</h1>
+
+    {% if result_1 %}
+        <p style="color: {{ 'green' if 'Corect' in result_1 else 'red' }};"><strong>{{ result_1 }}</strong></p>
+    {% endif %}
+
+    {% if result_2 %}
+        <p style="color: {{ 'green' if 'Corect' in result_2 else 'red' }};"><strong>{{ result_2 }}</strong></p>
+    {% endif %}
+
+    <form method="POST">
+        <h3>{{ question["question"] }}</h3>
+        {% for option in question["options"] %}
+            <label>
+                <input type="radio" name="answer_1" value="{{ option }}" required>
+                {{ option }}
+            </label><br>
+        {% endfor %}
+        <input type="hidden" name="correct_answer_1" value="{{ question["answer"] }}">
+        <hr>
+
+        <h3>Cine este acest campion?</h3>
+        <img src="{{ champ['image'] }}" alt="Campion" style="width:150px;"><br><br>
+
+        {% for champion in champions %}
+            <label>
+                <input type="radio" name="answer_2" value="{{ champion['name'] }}" required>
+                {{ champion['name'] }}
+            </label><br>
+        {% endfor %}
+        <input type="hidden" name="correct_answer_2" value="{{ champ['name'] }}">
+        <br><br>
+        <button type="submit">Trimite răspuns</button>
+    </form>
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <hr>
+    <h2>Utilizator: {{ username }}</h2>
+    <p>Scor curent: {{ score }}</p>
+</body>
+</html>
